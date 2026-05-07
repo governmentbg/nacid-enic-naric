@@ -1,0 +1,15 @@
+#server:
+#  servlet:
+#    context-path: /nacid-backoffice-core-data
+#
+#bo:
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    jdbcUrl: jdbc:postgresql://duosoft2.abbaty.int:5435/nacid_bo
+#    username: postgres
+#    password: postgres
+#    maximum-pool-size: 3
+#  hibernate:
+#    show_sql: true
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect

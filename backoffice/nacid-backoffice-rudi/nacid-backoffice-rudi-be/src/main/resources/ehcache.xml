@@ -1,0 +1,57 @@
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xmlns:jsr107='http://www.ehcache.org/v3/jsr107'>
+
+    <service>
+        <jsr107:defaults enable-management="true" enable-statistics="true"/>
+    </service>
+    <cache alias="KeycloakUsers" uses-template="ttl-1hour"/>
+    <cache alias="UniversityServiceImpl" uses-template="default"/>
+    <cache alias="CommissionMemberServiceImpl" uses-template="default"/>
+    <cache alias="CommissionApplicationServiceImpl" uses-template="default"/>
+    <cache alias="CommissionCalendarServiceImpl" uses-template="default"/>
+    <cache alias="CommissionParticipationServiceImpl" uses-template="default"/>
+    <cache alias="CompetentInstitutionService" uses-template="default"/>
+    <cache alias="ReferenceDataClientService" uses-template="ttl-1hour"/>
+    <cache alias="AppStatusClientService" uses-template="ttl-1hour"/>
+    <cache alias="UniversityExaminationServiceImpl" uses-template="ttl-1hour"/>
+    <cache alias="TrainingInstitutionService" uses-template="ttl-1hour"/>
+
+
+    <cache-template name="default">
+        <expiry>
+            <tti unit="hours">2</tti>
+        </expiry>
+        <listeners>
+            <listener>
+                <class>bg.duosoft.nacid.backoffice.rudi.be.config.cache.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+            </listener>
+        </listeners>
+        <heap unit="entries">2000</heap>
+    </cache-template>
+
+    <cache-template name="ttl-1hour">
+        <expiry>
+            <ttl unit="hours">1</ttl>
+        </expiry>
+        <listeners>
+            <listener>
+                <class>bg.duosoft.nacid.backoffice.rudi.be.config.cache.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+            </listener>
+        </listeners>
+        <heap unit="entries">2000</heap>
+    </cache-template>
+</config>

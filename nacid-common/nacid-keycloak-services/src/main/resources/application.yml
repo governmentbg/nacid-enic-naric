@@ -1,0 +1,16 @@
+keycloak:
+  client:
+    id: kc-rest-services
+    secret: MezzhHFKMNcEt4KUwG1ynjNyXUpkVJXy
+  provider:
+    base-uri: http://localhost:8089
+    realm:
+      name: NACID
+      admin-user: kc-rest-services
+      admin-password: 123456
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    jdbcUrl: jdbc:postgresql://localhost:5432/keycloak18
+    username: postgres
+    password: postgres
+    maximum-pool-size: 3

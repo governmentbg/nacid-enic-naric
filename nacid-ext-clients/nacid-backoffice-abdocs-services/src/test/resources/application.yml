@@ -1,0 +1,19 @@
+feign:
+  abdocs-api:
+    base-url: http://192.168.19.33:10001/api
+
+
+abdocs:
+  base-url: http://192.168.19.33:10001
+  admin-user: admin
+  token-auth:
+    user: backoffice
+    password: "!QAZ2wsx"
+
+ras:
+  base-url: TEST
+apostille:
+  base-url: TEST
+spring:
+  profiles:
+    active: test

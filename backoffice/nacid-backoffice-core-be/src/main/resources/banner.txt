@@ -1,0 +1,6 @@
+${AnsiColor.BRIGHT_MAGENTA},-----.   ,-----.         ,-----. ,-----. ,------. ,------.       ,-----. ,------.
+${AnsiColor.BRIGHT_MAGENTA}|  |) /_ '  .-.  ',-----.'  .--./'  .-.  '|  .--. '|  .---',-----.|  |) /_|  .---'
+${AnsiColor.BRIGHT_MAGENTA}|  .-.  \|  | |  |'-----'|  |    |  | |  ||  '--'.'|  `--, '-----'|  .-.  \  `--,
+${AnsiColor.BRIGHT_MAGENTA}|  '--' /'  '-'  '       '  '--'\'  '-'  '|  |\  \ |  `---.       |  '--' /  `---.
+${AnsiColor.BRIGHT_MAGENTA}`------'  `-----'         `-----' `-----' `--' '--'`------'       `------'`------'
+${Ansi.GREEN}${AnsiStyle.BOLD}  :: Spring Boot${spring-boot.formatted-version} :: ${AnsiStyle.NORMAL}${Ansi.DEFAULT}

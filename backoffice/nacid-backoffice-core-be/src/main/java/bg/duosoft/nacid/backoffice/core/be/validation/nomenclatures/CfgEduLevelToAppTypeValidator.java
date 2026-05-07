@@ -1,0 +1,40 @@
+package bg.duosoft.nacid.backoffice.core.be.validation.nomenclatures;
+
+import bg.duosoft.nacid.backoffice.core.be.service.nomenclature.CfgEducationLevelToApplicationTypeService;
+import bg.duosoft.nacid.backoffice.core.data.domain.entity.nomenclatures.CfgEduLevelToAppTypeEntityPK;
+import bg.duosoft.nacid.backoffice.core.data.domain.rest.nomenclatures.CfgEduLevelToAppTypeDTO;
+import bg.duosoft.nacidshareddata.validation.config.ValidationError;
+import bg.duosoft.nacidshareddata.validation.config.Validator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class CfgEduLevelToAppTypeValidator implements Validator<CfgEduLevelToAppTypeDTO> {
+    @Override
+    public List<ValidationError> validate(CfgEduLevelToAppTypeDTO obj, Object... args) {
+        CfgEducationLevelToApplicationTypeService service = (CfgEducationLevelToApplicationTypeService) args[1];
+        List<ValidationError> errors = new ArrayList<>();
+
+        rejectIfTrue(errors, Objects.isNull(obj.getEducationLevel()) || !StringUtils.hasText(obj.getEducationLevel().getId()), "educationLevel.id", "validation.field.required");
+        rejectIfTrue(errors, Objects.isNull(obj.getApplicationType()) || !StringUtils.hasText(obj.getApplicationType().getId()), "applicationType.id", "validation.field.required");
+        rejectIfTrue(errors, Objects.isNull(obj.getApplicationSubtype()) || !StringUtils.hasText(obj.getApplicationSubtype().getId()), "applicationSubtype.id", "validation.field.required");
+
+        if (Objects.nonNull(obj.getEducationLevel()) && StringUtils.hasText(obj.getEducationLevel().getId()) &&
+                Objects.nonNull(obj.getApplicationType()) && StringUtils.hasText(obj.getApplicationType().getId()) &&
+                Objects.nonNull(obj.getApplicationSubtype()) && StringUtils.hasText(obj.getApplicationSubtype().getId())) {
+            CfgEduLevelToAppTypeDTO cfgEduLevelToAppTypeDTO = service.selectById(obj.getEducationLevel().getId(), obj.getApplicationType().getId(), obj.getApplicationSubtype().getId());
+            if (Objects.nonNull(cfgEduLevelToAppTypeDTO)) {
+                reject(errors, "existingRecord", "m.existing.config");
+            }
+        }
+        return errors;
+    }
+}

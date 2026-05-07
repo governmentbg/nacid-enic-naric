@@ -1,0 +1,799 @@
+public class Doc {
+     Integer docId; // Id of the case. If doc is Case RootDocId = Id;
+     Integer rootDocId;
+     Integer parentId;
+     DocDirection docDirection;
+     Integer docTypeId;
+     Integer docSourceTypeId; // nullable
+     String docSubject;
+     DocStatus docStatus;
+     String regUri;
+     Date regDate;
+     Integer receiptOrder;// Order of creation inside the case.
+     List<DocCorrespondents> docCorrespondents;
+     List<DocFile> docFiles;
+     ReceivedOriginalState receivedOriginalState; // Получен оригинал
+     Integer tenantId // nullable
+     Guid guid // This is needed for EgovExchange and Will be generated only for documants that participate in exchange, nullable
+     Boolean isCase
+     String docBody // Text section in the UI
+     DocRegistrationType regType
+     Integer registerIndexId
+     String regIndex // code of RegisterIndex
+     Integer regSequenceNumber // Value from RegisterIndexCounter used in filtering
+     Integer caseRegSequenceNumber // Value for Number in case for the current Register Index
+     Boolean isRegistered
+     Boolean RegIncludeDateInNumber // When register doc by case/parent and case/parent is registered with external number
+     Date dateReceived; // The time in which document is handled to the applicant. Nullable
+     String accessCode
+     Date assignmentDeadline // nullable
+     Boolean isSigned
+     Integer archiveIndexId // nullable
+     Integer archiveYear // nullable
+     Date deadlineDate // nullable
+     Integer gdprId // nullable
+     Integer activityId // nullable
+     String archiveFolderNumber
+     Integer archiveBoxNumber // nullable
+     Integer archiveCaseNumber // nullable
+     Date archiveDate // nullable
+     Integer incomingDocId // nullable
+     Integer IncomingEmailId // nullable
+     List<DocUnit> docUnits;
+     List<DocFileLink> docFileLinks;
+     List<DocClassification> docClassifications;
+     List<DocHasRead> docHasReads;
+     List<DocWorkflow> docWorkflows;
+     List<DocCopy> docCopies;
+     List<DocConnectedDoc> docConnectedDocs;
+     List<DocComment> docComments;
+     List<DocTextField> docTextFields;
+     List<DocActionRequest> docActionRequests;
+     List<DocEmail> docEmails;
+     List<DocElectronicServiceStage> docElectronicServiceStages;
+     DocElectronicServiceStage CurrentElectronicServiceStage
+     Integer officialDocId // nullable
+     String docIdHash
+     List<Doc> children;
+     Integer level
+     Boolean hasChildren
+     List<DocClosure> descendants;
+     List<DocClosure> ancestors;
+
+}
+
+----------------------------------------------------------------------------------
+
+public class DocFile {
+	 Integer Id; // Id на файла в нашата база (необходим е, когато трябва да се редактира или трие файл към документ)
+	 Integer docId; // Id към кой документ е файла
+     Integer dbId; // Id на базата, в която е записан файла (възможно е да имаме повече от 1 различни бази за запис на файловете)
+     Guid key;
+     String name; // Пълно име на файла
+	 DocFileVisibility docFileVisibility; // Дали е публичен или вътрешен файл
+	 String description; // Описание
+	 boolean isPrimary; // Дали файла е основен (в един документ, само 1 файл може да е основен),
+	 String mimeType; // Вид на файла 
+     DocFileType docFileType
+     Integer electronicDocumentId // nullable
+     TextExtractStatus textExtractStatus
+     DocFileTextContent docFileTextContent
+     String textContentSearchResult
+     Byte[] signature
+     Integer insertOrder // nullable
+     String signatureData
+     Date signDate // nullable
+     Boolean isSigned
+     Boolean isActive
+     Boolean isHidden
+     Boolean isCorrupted
+     Boolean manuallyInserted
+     Boolean isSearchResult
+     List<DocFileHistoryRecord> docFileHistoryRecords;
+     List<SignatureInfo> signatureInfos;
+     List<DocFileLink> docFileLinks;
+}
+
+----------------------------------------------------------------------------------
+
+public class PreDocDO {
+     Integer parentDocId; // Към преписка
+     DocDirection docDirection = DocDirection.Incoming; // Посока на документа
+     ReceivedOriginalState receivedOriginalState; // Получен оригинал
+    // = ReceivedOriginalState.WaitingForOriginal.value() - Ако е в ичакване
+    // = ReceivedOriginalState.ReceivedOriginal.value() - Ако е получен оригинал
+     Integer docSourceTypeId; // Начин на постъпване в системата (номенклатура)
+     Integer docTypeId; // Вид на документ (номенклатура)
+     String docSubject; // Относно
+     RegistrationDto registration; // Това Dto се използва за начина на регистриране на документа !!! Ако не искате да се регистрира (а да е чернова) трябва да се прати null
+     List<DocCorrespondents> correspondents; // Кореспонденти към документа
+     boolean fromExternalApi = true; // Слагайте я true, за да ни се логва в нашата система, че документа е създаден от външно API
+     boolean docStatusProcessed = true; // За да не се редактира "Получен оригинал", документа трябва да е в различен статус от Чернова.
+    // По този начин се създава документа в статус Обработен.
+	 List<String> additionalDocUnitsUsernames; // При подаване на списък с потребителски имена в документа се добавят служители с роля До отговарящи на подадените потребителски имена.
+	 Integer additionalDocUnitsRole; // Ако са подадени additionalDocUnitsUsernames това поле може да смени ролята от ДО на някаква друга. (ОТ - 1, ДО - 2, Въвел - 3 и др.)
+     List<IncomingEmailAttachment> incomingEmailAttachments; // За създаване на файлове към документа
+     DocCaseLinkDto docCaseLink; // Необходимо е за да създаде връзка към IPAS при регистрацията
+     Integer docCreationPreferenceId
+     Integer archiveIndexId
+     Integer docNumbers
+     String corrRegNumber
+     Date corrRegDate
+     Integer tenantId
+     Integer incomingEmailId
+     Integer linkCaseId
+     Date dateReceived
+     List<DocFile> docFiles;
+}
+
+----------------------------------------------------------------------------------
+
+public class PreDocFromEmailDO {
+	List<DocFile> docFiles; // Прикачени файлове
+	String docSubject; // Относно
+	DocType docType; // Вид на документ (номенклатура)
+	DocTypeGroup docTypeGroup; // Група на вид документ (номенклатура). Вид документ има FK към DocTypeGroup	
+	DocSourceType docSourceType; // Начин на постъпване в системата (номенклатура)
+	Correspondent correspondent; // Кореспондент (този, който е пратил имейла)
+	CorrespondentContact currentContact; // Контакт на кореспондента
+	Date dateReceived; // Дата на получаване на имейла
+}
+
+----------------------------------------------------------------------------------
+
+public class IncomingEmailFilterDto {
+	IncomingEmailType Filter // Тип на IncomingEmail-a: трябва да е 1 - mailbox
+    IncomingEmailStatus emailStatus
+    Date fromDate
+    Date toDate
+}
+
+----------------------------------------------------------------------------------
+
+public class RegistrationDto {
+    DocRegistrationType docRegistrationType; // Начин на регистриране
+    // = DocRegistrationType.ByDocType.value() - Спрямо вида на документа
+    // = DocRegistrationType.ByParentDocRegistrationNumber.value() - Спрямо на вида на документа на преписката, към която се връзва този документ (трябва да има parentDocId)
+    // = DocRegistrationType.ExternalRegistrationNumber.value() - По външен номер
+    String registrationNumber; // Външен номер (използва се когато DocRegistrationType.ExternalRegistrationNumber.value())
+    Integer docId // nullable
+    Integer regIndexId // nulable
+    Date regDate
+    Boolean includeDateInNumber
+    Integer parentDocId
+    Integer rootDocId
+}
+
+----------------------------------------------------------------------------------
+
+public class DocCaseLinkDO {
+    boolean createDocCaseLink = true; // Трябва да е true
+    String registerName = "ipas"; // Трябва да е "ipas"
+    Integer entityid // nullable
+}
+
+----------------------------------------------------------------------------------
+
+public class Attachments {
+    byte[] content; // Съдържанието на файла в byte array
+    String mimeType; // Тип на данните
+    String name; // Пълно име на файла
+}
+----------------------------------------------------------------------------------
+
+public class DocCorrespondent {
+	Integer id; // Id на DocCorrespondents в нашата система (информационно, не се попълва)
+	Integer docId; // DocId в нашата система (информационно, не се попълва)
+	Integer correspondentId; // CorrespondentId в нашата система (информационно, не се попълва)
+	Correspondent correspondent;
+	Integer docDestinationTypeId: // Id на обекта от номенклатурата Изпратено чрез.
+	DocCorrespondentType docCorrespondentType; // Тип на кореспондента: 0 - просто кореспондент (не е заявител/представител), 2 - applicant (заявител), 3 - representative (представител)
+	String correspondentContactId; // Избор на адрес за кореспондиране (от кореспондента) за конкретния документ.
+										   // Вашето Id, като трябва адреса да го има въведен и в нашата система
+}
+
+----------------------------------------------------------------------------------
+
+public class Correspondent {
+    Integer id; // Id на кореспондента в нашата система (информационно, не се попълва)
+    CorrespondentType correspondentType; // Тип на кореспондента
+    Integer correspondentGroupId; // Група на кореспондента (номенклатура)
+    String name; // Наименование, ако е организация
+    String firstName; // Първо име (ако е ФЛ)
+    String middleName; // Второ име (ако е ФЛ)
+    String lastName; // Фамилия (ако е ФЛ)
+    Boolean hideUin
+    String uin; // ЕГН/БУЛСТАТ
+    Integer externalId; // Вашето Id, винаги ни го пращайте
+    List<CorrespondentContact> correspondentContacts;
+    Integer tenantId // nullable
+    Integer registerIndexId // nullable
+    String search // this column contains Name + Uin
+    String foreignerUINType
+    Date birthDate
+    // Company
+    String legalEntityRegisterName
+    String legalEntityOtherData
+    Integer docsExchangeProviderId
+    String alias
+}
+
+----------------------------------------------------------------------------------
+
+public class CorrespondentContact {
+	Integer id; // Id на контакта в нашата база (информационно, не се попълва)
+	Integer correspondentId; // Id към кой кореспондент е контакта в нашата база (информационно, не се попълва)
+	String name; // Име на кореспондента
+	String email; // Имейл
+	String phone; // Телефон
+	String address; // Адрес
+	String fax; // Факс
+	String postCode; // Пощенски код
+	Country country; // Dto обект, в който се намира код-а, по който ще се сет-ва
+	Integer settlementId; // Id на населеното място в нашата система
+	String foreignerSettlement; // Име на населено място, ако е чужденец
+	Integer externalId; // Вашето Id
+    String postOfficeBox
+    Integer districtId
+    Integer municipalityId
+    String displayName
+}
+
+----------------------------------------------------------------------------------
+
+public class TextField {
+	Integer id; // Id на етикета към документ в нашата база (информационно, не се попълва)
+	String name; // Име на етикета към документ
+	boolean dateActivated; // Дата
+	boolean isRequired; // Задължително
+	boolean isActive; // Активна
+	List<TextFieldDocType> textFieldDocTypes; // Задължително се попълва при записване на нов етикет към документ (колекция от видове документи, към които е приложим този етикет)
+	List<TextFieldTextFieldValue> textFieldTextFieldValues; // Задължително се попълва при записване на нов етикет (колекция от стойности, които да са приложими)
+    Boolean textActivated
+    Boolean docUnitModeActivated
+    Boolean correspondentModeActivated
+    Integer fieldSize // 1-12
+    Integer tenantId // nullable
+}
+
+----------------------------------------------------------------------------------
+
+public class TextFieldValue {
+	Integer id; // Id на стойност на етикет в нашата база (информационно, не се попълва)
+	String name; // Име на стойност
+	boolean isActive; // Активна
+}
+
+----------------------------------------------------------------------------------
+
+public class TextFieldTextFieldValue {
+	Integer textFieldValueId; // FK към таблицата TextFieldValue
+	Integer textFieldId; // FK към таблицата TextField
+}
+
+----------------------------------------------------------------------------------
+
+public class TextFieldDocType {
+	Integer docTypeId; // FK към таблицата DocType
+	Integer textFieldId; // FK към таблицата TextField
+}
+
+----------------------------------------------------------------------------------
+
+public class Country {
+    String code; // Код на държавата
+    String name;
+    Integer id;
+}
+
+----------------------------------------------------------------------------------
+
+public enum CorrespondentType {
+    BulgarianCitizen(1, "bulgarianCitizen"),
+    Foreigner(2, "foreigner"),
+    LegalEntity(3, "legalEntity"),
+    ForeignLegalEntity(4, "foreignLegalEntity");
+}
+
+----------------------------------------------------------------------------------
+
+public enum DocCorrespondentType {
+	Correspondent(1),
+    Applicant(2, "applicant"),
+    Representative(3, "representative");
+}
+
+----------------------------------------------------------------------------------
+
+public enum DocDirection {
+    Incoming(1, "incoming"),
+    Internal(2, "internal"),
+    Outgoing(3, "outgoing");
+    InternalOutgoing(4, "internalOutgoing")
+
+}
+----------------------------------------------------------------------------------
+
+public enum DocStatus {
+    Draft(1, "draft"),
+    Processed(3, "processed"),
+    Finished(4, "finished"),
+    Canceled(5, "canceled"),
+    Archived(6, "archived"),
+    Deleted(7, "deleted");
+    unprocessed(8, "unprocessed");
+    hidden(9, "hidden");
+}
+
+----------------------------------------------------------------------------------
+
+public enum DocRegistrationType {
+    ByCaseRegistrationNumber(1),
+    ByCorrespondentGroup(2),
+    ByDocType(3),
+    ExternalRegistrationNumber(4),
+    ManualRegistration(5),
+    Legacy(6),
+    ByParentDocRegistrationNumber(7),
+    ByCorrespondent(8),
+}
+
+----------------------------------------------------------------------------------
+
+public enum ReceivedOriginalState {
+    WaitingForOriginal(1), // В изчакване
+    ReceivedOriginal(2); // Получен
+    NotWaitingForOriginal(3); // Не очаква
+}
+
+----------------------------------------------------------------------------------
+
+public enum IncomingEmailType {
+    Mailbox(1) // Тип на получения имейл (от електронна поща)
+    EDelivery(2) // Тип на получения имейл (от електронна поща)
+}
+
+----------------------------------------------------------------------------------
+
+public enum DocFileVisibility {
+    PrivateAttachedFile(1, "privateAttachedFile"), // Вътрешен
+    PublicAttachedFile(2, "publicAttachedFile"); // Публичен
+}
+
+----------------------------------------------------------------------------------
+
+public class FileDto {
+	Integer dbId; // Номер на базата, в която се намира файла - 1
+	String name; // име на файла
+	Guid key; // Взима се след, като се запише файла в базата FileStorage
+	boolean manuallyInserted; // трябва да е true;
+    String content
+}
+
+----------------------------------------------------------------------------------
+
+public class DocActionRequest {
+    Integer docId;
+    DocActionRequestType type; // 12 - задача, 13 - насочване
+	Boolean addRootDocPermissions; // Освен права по документа, дава права и по преписката на служителите към които е насочена задачата/насочването
+    Integer unitId; // Служител, който създава задачата/насочването
+	Integer fromUnitId; // Ако служителят е упълномощен и работи от името на упълномощителя се слага id на упълномощителя, иначе се слага id на служителя който създава задачата/насочването
+	Date createDate; // Дата и час в момента
+	Integer expectedResultId; // Очакван резултат (за какво е задачата/насочването) - номенклатура
+	String note; // Забележка
+	List<DocUnit> docUnits; // списък с хората, към които е насочена задачата/насочването
+	List<DocAction> actions
+    Date assignmentDeadline
+    Boolean isFinished
+    Boolean canCreateAction
+    Boolean hasRead
+    Boolean highPriority
+}
+
+----------------------------------------------------------------------------------
+
+public class DocUnit {
+    Integer unitId;
+    Date createDate; //Дата и час в момента
+    Integer docUnitRole; // Тип най-често ви трябва 2 - "ДО"
+    Integer docId
+    Integer docActionRequestId
+    Integer parentDocUnitId
+    List<DocUnit> childrenUnits
+    Integer craeteUnitId
+}
+
+----------------------------------------------------------------------------------
+
+public class DocAction {
+    Integer docId;
+	Integer unitId; // Служител, който създава задачата/насочването
+	Integer fromUnitId; // Ако служителят е упълномощен и работи от името на упълномощителя се слага id на упълномощителя, иначе се слага id на служителя който създава задачата/насочването
+    Date createDate; //Дата и час в момента
+    Integer docActionRequestId; // id на задачата/насочването към което се прави този отговор
+	Integer typeId; // Очакваният резултат на задачата/насочването - expectedResultId в DocActionRequest
+	String note; // Забележка
+	Integer result; // 1-Да, 2-Не (дали отговара е положителен или отрицателен)
+}
+
+----------------------------------------------------------------------------------
+
+public class Unit {
+    Integer id;
+	String name;
+    Integer unitType;
+    String position;
+    Boolean hasSubordinatePermissions;
+    Boolean isActive;
+    List<UnitClassification> unitClassifications;
+    List<UnitSubstitute> substituteUnits;
+    List<UnitGroup> unitsInGroup;
+    List<Unit> children;
+    Integer level;
+    Integer parentId; // nullable
+}
+
+----------------------------------------------------------------------------------
+
+						NOTIFY DOCUMENT CHANGE STATUSES
+
+----------------------------------------------------------------------------------
+
+		[Description("За подписване")]
+		[Obsolete("Not in use anymore")]
+		SignRequest = 1,
+
+		[Description("За съгласуване")]
+		[Obsolete("Not in use anymore")]
+		DiscussRequest = 2,
+
+		[Description("За одобрение")]
+		[Obsolete("Not in use anymore")]
+		ApprovalRequest = 3,
+
+		[Description("За регистрация")]
+		[Obsolete("Not in use anymore")]
+		RegistrationRequest = 4,
+
+		[Obsolete("Not in use anymore")]
+		[Description("Подписване")]
+		Sign = 5,
+
+		[Obsolete("Not in use anymore")]
+		[Description("Съгласуване")]
+		Discuss = 6,
+
+		[Obsolete("Not in use anymore")]
+		[Description("Одобрение")]
+		Approval = 7,
+
+		[Description("Регистрация")]
+		Registration = 8,
+
+		[Description("Електронен подпис")]
+		ElectronicSign = 9,
+
+		[Description("Обработен")]
+		Processed = 10,
+
+		[Description("Приключен")]
+		Finished = 11,
+
+		[Description("Върнат в чернова")]
+		ToDraft = 12,
+
+		[Description("Отхвърлен")]
+		Canceled = 13,
+
+		[Description("Промяна")]
+		Changed = 14,
+
+		[Description("Архивиран")]
+		Archived = 15,
+
+		[Description("Дерегистрация")]
+		Deregistration = 16,
+
+		[Description("Върнат статус")]
+		ReversedStatus = 17,
+
+		[Description("Междуведомствен обмен")]
+		DocsExchange = 18,
+
+		[Description("Изпратен имейл")]
+		DocEmailSent = 19,
+
+		[Description("Изваден от архив")]
+		Restored = 20,
+
+		[Obsolete]
+		[Description("Отказ на подписване")]
+		CancelSign = 21,
+
+		[Obsolete]
+		[Description("Отказ на съгласуване")]
+		CancelDiscuss = 22,
+
+		[Obsolete]
+		[Description("Отказ на одобрение")]
+		CancelApproval = 23,
+
+		[Description("Променен архив")]
+		ArchiveChanged = 24,
+
+		[Description("Официализиран")]
+		Officiated = 25,
+
+		[Description("Премахнат официален документ")]
+		Unofficiated = 26,
+
+		[Description("Прехвърлен документ")]
+		DocTransfered = 27,
+
+		//[Description("Мигрирано действие")]
+		//MigrationEvent = 28,
+
+		[Description("Обратна разписка")]
+		ReceiptInfo = 29,
+
+		[Description("Създаден нов подчинен документ")]
+		NewChildDoc = 30,
+
+		[Description("Преглед на документ")]
+		DocView = 31,
+
+		[Description("Автоматично създаден документ")]
+		AutoCreateDoc = 32,
+
+		[Description("Променена посока на документ")]
+		DocDirectionChange = 33,
+
+		[Description("Променен вид на документ")]
+		DocTypeChange = 34,
+
+		[Description("Сливане на кореспондент")]
+		FromMergeCorr = 35,
+
+		[Description("Възстановенo сливане")]
+		FromUnmergeCorr = 36,
+
+		[Description("Добавен оригинал")]
+		ReceiveOriginal = 37,
+
+		[Description("Добавен прикачен документ")]
+		UploadDocFile = 38,
+
+		[Description("Прегледан списък с подписи към прикачен документ")]
+		GetSignatureInformationForDocFile = 39,
+
+		[Description("Електронно подписване на прикачен документ")]
+		SignAttachedFile = 40,
+
+		[Description("Добавен сканиран документ")]
+		ScanDocFile = 41,
+
+		[Description("Създаден документ")]
+		CreateDoc = 42,
+
+		[Description("Редакция на заявка за действие")]
+		UpdateDocActionRequest = 43,
+
+		[Description("Автоматично регистриране")]
+		AutoRegistration = 44,
+
+		[Description("Резултат към заявка за действие")]
+		ActionForDocActionRequest = 45,
+
+		[Description("Създадена задача")]
+		TaskRequest = 46,
+
+		[Description("Насочване")]
+		ReferenceRequest = 47,
+
+		[Description("Промяна на прикачен документ")]
+		DocFileModification = 48,
+
+		[Description("Подписване на прикачен документ")]
+		DocFileSigning = 49,
+
+		[Description("Изтрит подчинен документ")]
+		DeletedChildDoc = 50,
+
+		[Description("Създаване на връзка към файл.")]
+		DocFileLink = 51,
+
+		[Description("Промяна на кореспонденти")]
+		EditDocCorrs = 52,
+
+		[Description("Изтрит")]
+		Deleted = 53,
+
+		[Description("Стартирано изпълнение по задача/и")]
+		RequestsStarted = 54,
+
+		[Description("Приключване на заявка за действие")]
+		RequestFinished = 55,
+
+		[Description("Премахване на инвидуални права")]
+		DisableDocUnit = 56,
+
+		[Description("Дублиран документ")]
+		DuplicatedDoc = 57,
+
+		[Description("Промяна на служители")]
+		UpdatedDocUnits = 58,
+
+		[Description("Изтриване на файл")]
+		DeletedDocFile = 59,
+
+		[Description("Добавяне на временни права")]
+		AddDocPerionUnit = 60,
+
+		[Description("Премахване на временни права")]
+		RemoveDocPeriodUnit = 61,
+
+		[Description("Промяна на дата на регистриране")]
+		ChangedRegDate = 62,
+
+		[Description("Ръчно въведена версия на файл")]
+		ManuallyInsertedFile = 63,
+
+		[Description("Промяна на класификация")]
+		DocClassificationChange = 64,
+
+		[Description("Система за сигурно електронно връчване")]
+		DocEDelivery = 65,
+
+		[Description("Техническа редакция на заявка за действие")]
+		TechEditDocActionRequest = 66,
+
+		[Description("Техническа редакция на резултат към заявка за действие")]
+		TechEditDocAction = 67,
+
+		[Description("Техническа редакция в история по документ")]
+		TechEditDocWorkflow = 68,
+
+		[Description("Регистриран документ (СЕОС)")]
+		DocsExchangeRegister = 69,
+
+		[Description("Отхвърлен документ (СЕОС)")]
+		DocsExchangeCancel = 70,
+
+		[Description("Принтиране на баркод")]
+		PrintBarcode = 71,
+
+		[Description("Създаване на задължение")]
+		CreateObligation = 72,
+
+		[Description("Регистрирано задължение в Портал за електронни разплащания")]
+		RegisterObligation= 73,
+
+		[Description("Плащане на задължение")]
+		PayObligation = 74,
+
+		[Description("Анулиране на задължение")]
+		CancelObligation = 75,
+
+		[Description("Потвърдено плащане на задължение")]
+		ConfirmPaymentObligation = 76,
+
+		[Description("Изтриване на задължение")]
+		DeleteObligation = 77,
+
+		[Description("Редактиране на задължение")]
+		EditObligation = 78,
+
+		[Description("Редактиран статус на плащане")]
+		EditPayment = 79,
+
+		[Description("Получена обратна разписка")]
+		ReceivedReceipt = 80,
+
+		[Description("Прочетен имейл")]
+		ReadEmail = 81,
+
+		[Description("Коментар")]
+		Comment = 82
+}
+
+----------------------------------------------------------------------------------
+
+public class SubstitutionFilterDO {
+    String unitSubstituteName;
+    String unitName;
+	Date fromDate;
+	Date toDate;
+}
+
+----------------------------------------------------------------------------------
+
+public class UnitFilterDto {
+    String username;
+    String name;
+	String position;
+	Boolean allunits;
+	Permission permissionType;
+	Date fromDate;
+	Date toDate;
+}
+
+----------------------------------------------------------------------------------
+
+								SERVICES
+
+----------------------------------------------------------------------------------
+
+- Създаване на документ: http://bpo.abbaty.com/api/docs, POST, Body: PreDocDO
+- Информация за документ: http://bpo.abbaty.com/api/docs/{docId}, GET
+- Намиране на Id на документ или данни за документ, спрямо регистровия му номер: http://bpo.abbaty.com/api/docs/byRegistrationNumber?number={registerNumber}, GET
+- Отбелязване, че е получен оригинал: http://bpo.abbaty.com/api/docs/{docId}/receiveOriginal, PUT
+- Сваляне на прикачен файл:  http://bpo.abbaty.com/api/FilesStorage?fileKey={key}&fileName={fullFileName}&dbId={dbId}, GET
+- Изтриване на документ: Документ може да бъде изтрит, ако е дошъл с външен регистров индекс или е последния регистриран с наш регистров индекс. Не можете да изтривате документ, на който регистровия индекс
+	не е последен, като номер, поради причината че може да се получат дупки. За да изтриете документ, първо трябва да се дерегистрира: http://bpo.abbaty.com/api/DocRegistration/{docId}/unregister, POST
+	Изтриване след като е дерегистриран документа: http://bpo.abbaty.com/api/docs/{docId}, DELETE
+- Анулиране на документ: http://bpo.abbaty.com/api/docs/{id}/cancel, POST
+- Изтриване на преписка и йерархично на всички подчинени документи: http://bpo.abbaty.com/api/docs/{docId}/WithChildren, DELETE
+- Запис на файл към вече съществуващ документ: Първо се праща към http://bpo.abbaty.com/api/FilesStorage, POST, Body: Binary file, application/octet-stream.
+	Метода връща dbId, filekey, hash, size. След това се праща заявка към http://bpo.abbaty.com/api/docFile, POST, Body: DocFile, като dbId и key се взимат от предния метод каквото е върнал
+- Смяна на датата на регистриране на документ: http://bpo.abbaty.com/api/DocRegistration/{docId}/changeRegDate?regDate=2019-08-14, POST
+- Създаване на кореспондент (подавайте и externalId): http://bpo.abbaty.com/api/corrs, Post, Body: Correspondent
+- Редакция на кореспондент (подавайте и externalId): http://bpo.abbaty.com/api/corrs/{corrId}, Post, Body: Correspondent, corrId-то трябва да е попълнено (вашето Id)
+- Преглед на населените места: http://bpo.abbaty.com/api/nomenclatures/settlements, GET
+- Добавяне на файл към съществуващ документ: http://bpo.abbaty.com/api/docFile, POST, Body: DocFile,
+- Редакция на съществуващ файл към документ: http://bpo.abbaty.com/api/docFile/{docFileId}/addChange/{version}, PUT, Body: FileDto,
+- Изтриване на съществуващ файл от документ: http://bpo.abbaty.com/api/docFile/{docId}/{docFileId}, DELETE
+- Регистрация на документ: http://bpo.abbaty.com/api/DocRegistration/register, POST, Body: RegistrationDto
+- Следващ статус: http://bpo.abbaty.com/api/docs/{docId}/next?targetDocStatus={docStatus}, POST, docStatus може да е proccesed (обработен) или finished (приключен), docStatus е enum
+- Намиране на всички видове документи, спрямо групата си: http://bpo.abbaty.com/api/nomenclatures/docType?parentValueId={docTypeGroupId}, GET,
+- Извличане на обект от номенклатурата "Изпратено чрез" на базата на alias: http://bpo.abbaty.com/api/Nomenclatures/DocDestinationType/byAlias?alias={alias}, GET, за Интернет Портал: alias = InternetPortal
+- Извличане на потребителските имена на служителите, които са упълнощили даден служител по неговото потребителско име: http://bpo.abbaty.com/api/unitSubstitutes , GET, Body: SubstitutionFilterDO
+// Закоментираните сървиси ги няма в сегашната деловодна
+//- Проверява дали даден имейл съществува по docId - Id на документа и emailId - guid: http://bpo.abbaty.com/api/email/{docId}/exists/{emailKey} - GET, връща се обект { exists: bool }
+//- Променя статус на имейл да стане прочетен по docId - Id на документа и emailId - guid: http://bpo.abbaty.com/api/email/{docId}/makeStatusSeen/{emailKey} - GET
+- Извлича служител по подаден username - http://bpo.abbaty.com/api/unitsFiltered - GET връща List<Unit>, Body: UnitFilterDto
+
+----------------------------------------------------------------------------------
+
+					Етикети към документ
+					
+----------------------------------------------------------------------------------
+
+- Преглед на всички стойности на етикети: http://bpo.abbaty.com/api/Nomenclatures/textFieldValues, GET
+- Добавяне на нова стойност на етикет: http://bpo.abbaty.com/api/Nomenclatures/textFieldValues, POST, Body: TextFieldValue,
+- Редакция на стойност на етикет: http://bpo.abbaty.com/api/Nomenclatures/textFieldValues, PUT, Body: TextFieldValue,
+
+- Преглед на всички етикети към документ: http://bpo.abbaty.com/api/Nomenclatures/TextFields, GET
+- Добавяне на нов етикет към документ: http://bpo.abbaty.com/api/Nomenclatures/TextFields, POST, Body: TextField,
+- Редакция на етикети към документ: http://bpo.abbaty.com/api/Nomenclatures/TextFields, PUT, Body: TextField,
+
+----------------------------------------------------------------------------------
+		
+					Записване на документа, като чернова
+					
+----------------------------------------------------------------------------------
+
+1. Създаване на документ: http://bpo.abbaty.com/api/docs, POST, Body: DocCreation, като registration property, трябва да е null, за да не го регистрира
+2. Регистриране на документ, в чернова който не е още регистриран: http://bpo.abbaty.com/api/DocRegistration/register, POST, Body: RegistrationDto
+3. За сменяне на статуса след, като е регистриран и все още е в чернова: http://bpo.abbaty.com/api/docs/{docId}/next?targetDocStatus={docStatus}, POST, docStatus може да е proccesed (обработен) или finished (приключен), docStatus е enum
+
+----------------------------------------------------------------------------------
+		
+					Регистриране на имейл от деловодната
+					
+----------------------------------------------------------------------------------
+
+1. Взимане на CreateDocEmailDto спрямо ID-то на имейла: http://bpo.abbaty.com/api/incomingEmails/GetPreDocFromEmail/{emailId}, GET, Response: PreDocFromEmailDO
+2. След като сте регистрирали документите спрямо имейла сменяте статуса на имейла на 'Регистриран от IPAS': http://bpo.abbaty.com/api/incomingEmails/{emailId}/status?status=registeredExternalSystem&docId={docId},
+3. Взимане на всички имейли: http://bpo.abbaty.com/api/incomingEmails/GetAll, POST, Body: IncomingEmailFilterDto
+
+----------------------------------------------------------------------------------
+		
+					Управление на задачи и насочвания
+					
+----------------------------------------------------------------------------------
+Създаване на задача насочване -  http://bpo.abbaty.com/api/DocActionRequests - POST DocActionRequest
+Създаване на отговор към заявка (приключване на конкретна задача/насочване от даден човек) - http://bpo.abbaty.com/api/DocActions POST DocAction
+
+Ръчно приключване на задачата/насочването без създаване на отговори (Използва се когато е грешно насочването и не трябва да е активно) - http://bpo.abbaty.com/api/DocActionRequests/{id}/Finish/{finishPermissions} - GET, id на задачата/насочването, finishPermissions - ако е true, задачата/насочването вече не отнесоно към нито един потребител
+
+

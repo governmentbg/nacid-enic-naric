@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>bg.duosoft</groupId>
+    <artifactId>nacid-backoffice-shared-data</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>nacid-backoffice-shared-data</name>
+    <description>Nacid Core Data Project</description>
+    <properties>
+        <java.version>17</java.version>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <lombok.version>1.18.24</lombok.version>
+        <nacid.backoffice.core.data.version>0.0.1-SNAPSHOT</nacid.backoffice.core.data.version>
+        <spring.boot.version>2.7.1</spring.boot.version>
+        <nacid.backoffice.core.client.version>0.0.1-SNAPSHOT</nacid.backoffice.core.client.version>
+        <nacid.payments.client.version>1.0.0-SNAPSHOT</nacid.payments.client.version>
+        <nacid.services.client.version>0.0.1-SNAPSHOT</nacid.services.client.version>
+        <nacid.core.api.client.version>1.0.0-SNAPSHOT</nacid.core.api.client.version>
+    </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bg.duosoft</groupId>
+            <artifactId>nacid-shared-dto</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bg.duosoft.nacid</groupId>
+            <artifactId>nacid-backoffice-core-data</artifactId>
+            <version>${nacid.backoffice.core.data.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bg.duosoft.nacid</groupId>
+            <artifactId>nacid-backoffice-core-client</artifactId>
+            <version>${nacid.backoffice.core.client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bg.duosoft.email</groupId>
+            <artifactId>nacid-email-producer</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft.nacid</groupId>
+            <artifactId>nacid-payments-client</artifactId>
+            <version>${nacid.payments.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft</groupId>
+            <artifactId>nacid-services-client</artifactId>
+            <version>${nacid.services.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft</groupId>
+            <artifactId>nacid-core-client</artifactId>
+            <version>${nacid.core.api.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.kenglxn.qrgen</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+			<id>sirma-releases</id>
+			<url>https://nexus.devzone.sirma.bg/repository/maven-releases/</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>sirma-snapshots</id>
+			<url>https://nexus.devzone.sirma.bg/repository/maven-snapshots/</url>
+		</snapshotRepository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
