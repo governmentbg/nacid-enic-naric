@@ -1,0 +1,15 @@
+server:
+  servlet:
+    context-path: /nacid-core-domain
+
+pdb:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    jdbcUrl: jdbc:postgresql://duosoft2.abbaty.int:5432/nacid_public
+    username: postgres
+    password: p0stGr#s
+    maximum-pool-size: 3
+  hibernate:
+    show_sql: true
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

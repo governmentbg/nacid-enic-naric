@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: nacid-core-api
+  profiles:
+    active: '@activeProfile@'
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
+---
+spring:
+  config:
+    activate.on-profile:
+      - dev
+      - office
+    import: configserver:http://duosoft-smallapps.devzone.sirma.bg:8301/nacid-config-server
+
+---
+spring:
+  config:
+    activate.on-profile:
+      - stage
+      - production
+    import: configserver:http://172.16.1.97:8301/nacid-config-server
+

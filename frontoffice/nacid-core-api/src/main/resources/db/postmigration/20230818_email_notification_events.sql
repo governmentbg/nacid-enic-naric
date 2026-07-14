@@ -1,0 +1,2 @@
+INSERT INTO emails.email_notification_event (code, name, name_en, notify_emails, notify_groups, notify_users) VALUES ('PaymentsError_Admin', 'PaymentsError_Admin', 'PaymentsError_Admin', 'raya.aneva@duosoft.net,ggeorgiev@duosoft.net', null, null);
+INSERT INTO emails.email_notification_event (code, name, name_en, notify_emails, notify_groups, notify_users) VALUES ('LibservAppSubmission_Admin', 'LibservAppSubmission_Administrators', 'LibservAppSubmission_Administrators', 'office@duosoft.bg', null, null);

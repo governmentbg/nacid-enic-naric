@@ -1,0 +1,17 @@
+--liquibase formatted sql
+
+--changeset ggeorgiev:0151 splitStatements:false
+--validCheckSum: 8:58f2edc70c48276b558e28e591415f40
+drop table rudi.university_examination_competent_institutions;
+drop table rudi.university_examination_training_forms;
+drop table rudi.university_examination_attached_docs;
+alter table rudi.training_course_university_examination drop column university_examination_id;
+drop table rudi.university_examination;
+drop table rudi.training_course_diploma_examination_attached_docs;
+drop table regprof.profession_experience_examination_attached_docs;
+drop table regprof.training_course_document_examination_attached_docs;
+alter table rudi.application_commission_member_statements drop column description;
+alter table rudi.application_commission_member_statements drop column doc_type_id;
+alter table rudi.application_commission_member_statements drop column attachment_id;
+alter table rudi.application_commission_member_statements drop column docflow_id;
+alter table rudi.application_commission_member_statements drop column date_created;

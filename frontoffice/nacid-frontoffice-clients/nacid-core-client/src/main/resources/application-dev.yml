@@ -1,0 +1,12 @@
+#feign:
+#  core-api:
+#    base-url: "http://localhost:8283/nacid-core-api/api"
+#    countries: ${feign.core-api.base-url}/v1/countries
+#    content-management: ${feign.core-api.base-url}/v1/content-management
+#    file-store: ${feign.core-api.base-url}/v1/file-store
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 10000
+#        loggerLevel: basic

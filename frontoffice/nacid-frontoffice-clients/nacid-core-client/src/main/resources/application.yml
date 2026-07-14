@@ -1,0 +1,9 @@
+#server:
+#  port: 8484
+#  servlet:
+#    context-path: /nacid-core-client
+#spring:
+#  application:
+#    name: nacid-core-client
+#  profiles:
+#    active: '@activeProfile@'

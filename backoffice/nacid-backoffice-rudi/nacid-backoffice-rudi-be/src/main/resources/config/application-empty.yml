@@ -1,0 +1,6 @@
+bo:
+  logging:
+    datasource:
+      jdbcUrl: jdbc:postgresql://duosoft2.abbaty.int:5435/nacid_bo_empty
+  datasource:
+    jdbcUrl: jdbc:postgresql://duosoft2.abbaty.int:5435/nacid_bo_empty

@@ -1,0 +1,10 @@
+package bg.duosoft.nacid.backoffice.core.be.repository.nomenclature;
+
+import bg.duosoft.nacidbackofficeshareddata.repository.NomenclatureBaseRepository;
+import bg.duosoft.nacid.backoffice.core.be.repository.nomenclature.custom.EuropeanQualificationsFrameworkSearchRepository;
+import bg.duosoft.nacid.backoffice.core.data.domain.entity.nomenclatures.EuropeanQualificationsFrameworkEntity;
+import bg.duosoft.nacid.backoffice.core.data.domain.rest.nomenclatures.filter.EuropeanQualificationFrameworkFilterDTO;
+
+public interface EuropeanQualificationsFrameworkRepository extends NomenclatureBaseRepository<Integer, EuropeanQualificationsFrameworkEntity, EuropeanQualificationFrameworkFilterDTO>, EuropeanQualificationsFrameworkSearchRepository {
+
+}

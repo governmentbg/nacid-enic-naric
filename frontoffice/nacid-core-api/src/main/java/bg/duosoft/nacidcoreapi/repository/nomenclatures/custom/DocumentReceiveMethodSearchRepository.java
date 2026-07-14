@@ -1,0 +1,8 @@
+package bg.duosoft.nacidcoreapi.repository.nomenclatures.custom;
+
+import bg.duosoft.nacidcoreapi.repository.nomenclatures.base.NomenclatureSearchBaseRepository;
+import bg.duosoft.nacidcoredata.domain.entity.nomenclature.DocumentReceiveMethodEntity;
+import bg.duosoft.nacidfrontofficedto.nomenclature.filter.DocumentReceiveMethodDataFilterDTO;
+
+public interface DocumentReceiveMethodSearchRepository extends NomenclatureSearchBaseRepository<String, DocumentReceiveMethodEntity, DocumentReceiveMethodDataFilterDTO> {
+}

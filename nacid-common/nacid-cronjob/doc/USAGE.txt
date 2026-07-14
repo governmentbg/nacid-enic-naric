@@ -1,0 +1,10 @@
+0. да се добави CronConfig, който може да се копира от nacid-backoffice-cron-be
+1. Трябва в приложението което се ползва да се сложи  (не знам защо - ако CronjobMailProducerConfig го сложа в Spring Boot приложението няма нужда от това exclude-ване, но ако е вътре в nacid-cronjob.jar-a, трябва да се сложи!!!!)
+@SpringBootApplication(exclude = RabbitAutoConfiguration.class)
+2. трябва да се добави PublicDatabaseConfig (да се копира от някой проект - примерно nacid-backoffice-cron-be)
+3. Ако се ползва spring devtools, да се създаде META-INF\spring-devtools.properties със следното съдържание
+restart.include.cronjob=/cronjob.*?\.jar
+restart.include.nacidcronjob=/nacid-cronjob.*?\.jar
+restart.include.mailproducer=/nacid.*?email.*?producer.*?\.jar
+(последния ред не съм сигурен закакво трябва. Копирах го от nacid-backoffice-cron-be)
+иначе cronjob.jar-a + nacid-cronjob.jar-a ще се load-нат с друг classloader от този който ще load-не класовете в текущото приложение и класа, който имплементира CronjobBase няма да може да autowire-ва сървиси от текущото приложение.... Ще има и проблеми с регистрацията на NacidMailSenderService

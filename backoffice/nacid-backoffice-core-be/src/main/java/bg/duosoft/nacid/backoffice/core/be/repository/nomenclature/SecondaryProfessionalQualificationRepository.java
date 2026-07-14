@@ -1,0 +1,9 @@
+package bg.duosoft.nacid.backoffice.core.be.repository.nomenclature;
+
+import bg.duosoft.nacidbackofficeshareddata.repository.NomenclatureBaseRepository;
+import bg.duosoft.nacid.backoffice.core.be.repository.nomenclature.custom.SecondaryProfessionalQualificationSearchRepository;
+import bg.duosoft.nacid.backoffice.core.data.domain.entity.nomenclatures.SecondaryProfessionalQualificationEntity;
+import bg.duosoft.nacid.backoffice.core.data.domain.rest.nomenclatures.filter.SecondaryProfessionalQualificationFilterDTO;
+
+public interface SecondaryProfessionalQualificationRepository extends NomenclatureBaseRepository<Integer, SecondaryProfessionalQualificationEntity, SecondaryProfessionalQualificationFilterDTO>, SecondaryProfessionalQualificationSearchRepository {
+}

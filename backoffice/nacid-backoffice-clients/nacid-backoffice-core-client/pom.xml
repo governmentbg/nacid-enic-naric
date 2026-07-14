@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>bg.duosoft.nacid</groupId>
+    <artifactId>nacid-backoffice-core-client</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>nacid-backoffice-core-client</name>
+    <description>nacid-backoffice-core-client</description>
+    <properties>
+        <java.version>17</java.version>
+        <lombok.version>1.18.24</lombok.version>
+        <openfeign.version>3.1.3</openfeign.version>
+        <nacid.backoffice.abdocs.services.version>1.0.0-SNAPSHOT</nacid.backoffice.abdocs.services.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${openfeign.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft.nacid</groupId>
+            <artifactId>nacid-backoffice-core-data-dto</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft.nacid</groupId>
+            <artifactId>nacid-backoffice-abdocs-services</artifactId>
+            <version>${nacid.backoffice.abdocs.services.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft</groupId>
+            <artifactId>nacid-frontoffice-dto</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft</groupId>
+            <artifactId>nacid-shared-data</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+			<id>sirma-releases</id>
+			<url>https://nexus.devzone.sirma.bg/repository/maven-releases/</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>sirma-snapshots</id>
+			<url>https://nexus.devzone.sirma.bg/repository/maven-snapshots/</url>
+		</snapshotRepository>
+    </distributionManagement>
+
+</project>

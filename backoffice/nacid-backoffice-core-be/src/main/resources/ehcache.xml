@@ -1,0 +1,79 @@
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xmlns:jsr107='http://www.ehcache.org/v3/jsr107'>
+
+    <service>
+        <jsr107:defaults enable-management="true" enable-statistics="true"/>
+    </service>
+    <cache alias="ApplicationTypeService" uses-template="default"/>
+    <cache alias="ApplicationSubtypeService" uses-template="default"/>
+    <cache alias="BolognaCycleService" uses-template="default"/>
+    <cache alias="CivilIdTypeService" uses-template="default"/>
+    <cache alias="CommissionMemberPositionService" uses-template="default"/>
+    <cache alias="DocumentReceiveMethodService" uses-template="default"/>
+    <cache alias="ArticleDirectiveService" uses-template="default"/>
+    <cache alias="DocumentTypeService" uses-template="default"/>
+    <cache alias="SecondaryProfessionGroupService" uses-template="default"/>
+    <cache alias="SecondaryProfessionalQualificationService" uses-template="default"/>
+    <cache alias="SecondarySpecialityService" uses-template="default"/>
+    <cache alias="EuropeanQualificationsFrameworkService" uses-template="default"/>
+    <cache alias="GraduationDocumentTypeService" uses-template="default"/>
+    <cache alias="CountryService" uses-template="default"/>
+    <cache alias="LanguageService" uses-template="default"/>
+    <cache alias="LegalReasonService" uses-template="default"/>
+    <cache alias="KeycloakUsers" uses-template="ttl-1hour"/>
+    <cache alias="NationalQualificationsFrameworkService" uses-template="default"/>
+    <cache alias="OriginalEduLevelService" uses-template="default"/>
+    <cache alias="ProfGroupService" uses-template="default"/>
+    <cache alias="ProfessionExperienceDocumentTypeService" uses-template="default"/>
+    <cache alias="SettlementService" uses-template="default">
+        <heap unit="entries">10000</heap>
+    </cache>
+    <cache alias="ApplicationPropertiesService" uses-template="default"/>
+    <cache alias="DictionaryService" uses-template="default"/>
+    <cache alias="referenceData" uses-template="default"/>
+    <cache alias="CfgReportSqlService" uses-template="default"/>
+    <cache alias="CfgReportFieldService" uses-template="default"/>
+    <cache alias="CfgAppStatusService" uses-template="default"/>
+    <cache alias="ChangeRecordLogService" uses-template="default"/>
+    <cache alias="WorkCalendarHolidayService" uses-template="default"/>
+    <cache alias="CfgServiceTypeService" uses-template="default"/>
+    <cache alias="ApplicationResponsibleUsersServiceImpl" uses-template="default"/>
+
+    <cache-template name="default">
+        <expiry>
+            <tti unit="hours">2</tti>
+        </expiry>
+        <listeners>
+            <listener>
+                <class>bg.duosoft.nacid.backoffice.core.be.config.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+            </listener>
+        </listeners>
+        <heap unit="entries">2000</heap>
+    </cache-template>
+
+    <cache-template name="ttl-1hour">
+        <expiry>
+            <ttl unit="hours">1</ttl>
+        </expiry>
+        <listeners>
+            <listener>
+                <class>bg.duosoft.nacid.backoffice.core.be.config.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+            </listener>
+        </listeners>
+        <heap unit="entries">2000</heap>
+    </cache-template>
+</config>
